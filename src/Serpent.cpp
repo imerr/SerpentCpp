@@ -162,7 +162,7 @@ void Serpent::LoadSubstring(const std::string& str, size_t& start) {
 			m_valueType = Table;
 			m_children = new SerpentChildren();
 			start++;
-			while (str[start] != '}') {
+			while (start < str.length() && str[start] != '}') {
 				Serpent key;
 				key.LoadSubstring(str, start);
 				if (str[start] == '=') {
@@ -178,6 +178,9 @@ void Serpent::LoadSubstring(const std::string& str, size_t& start) {
 				if (str[start] == ',') {
 					start++;
 				}
+			}
+			if (start == str.length()) {
+				throw Exception("Invalid serpent string? Couldn't find closing '}'");
 			}
 			start++;
 			break;
@@ -197,7 +200,8 @@ void Serpent::LoadSubstring(const std::string& str, size_t& start) {
 			break;
 		}
 		default: {
-			if (str[start] == 't' &&
+			if (start + 4 < str.length() &&
+				str[start] == 't' &&
 				str[start + 1] == 'r' &&
 				str[start + 2] == 'u' &&
 				str[start + 3] == 'e' &&
@@ -209,7 +213,8 @@ void Serpent::LoadSubstring(const std::string& str, size_t& start) {
 				start += 4;
 				return;
 			}
-			if (str[start] == 'f' &&
+			if (start + 5 < str.length() &&
+				str[start] == 'f' &&
 				str[start + 1] == 'a' &&
 				str[start + 2] == 'l' &&
 				str[start + 3] == 's' &&
@@ -222,7 +227,8 @@ void Serpent::LoadSubstring(const std::string& str, size_t& start) {
 				start += 5;
 				return;
 			}
-			if (str[start] == 'n' &&
+			if (start + 3 < str.length() &&
+				str[start] == 'n' &&
 				str[start + 1] == 'i' &&
 				str[start + 2] == 'l' &&
 				(str[start + 3] == '=' ||
@@ -270,6 +276,12 @@ void Serpent::LoadAsString(const std::string& str, size_t& start) {
 		}
 		result += str[start];
 		start++;
+	}
+	if (start == str.length()) {
+		if (enclosed) {
+			throw Exception("Invalid serpent string? Couldn't find closing \"");
+		}
+		throw Exception("Invalid serpent string? Couldn't find string end");
 	}
 	if (enclosed) {
 		start++;

@@ -164,7 +164,7 @@ protected:
 
 	// WARNING: These assume the object is empty and will not destroy
 	// resources correctly if used on already populated objects
-	bool LoadAsNumber(const std::string& basic_string, size_t& start);
+	bool LoadAsNumber(const std::string& str, size_t& start);
 
 	// WARNING: These assume the object is empty and will not destroy
 	// resources correctly if used on already populated objects
