@@ -62,7 +62,8 @@ public:
 
 	template<typename T>
 	T As() const {
-		static_assert(std::is_arithmetic<T>::value && !std::is_same<T, bool>::value, "Type is not supported by Serpent::As<>");
+		static_assert(std::is_arithmetic<T>::value && !std::is_same<T, bool>::value,
+					  "Type is not supported by Serpent::As<>");
 		if (m_valueType != Number) {
 			throw Exception("Node is not a number");
 		}
@@ -89,16 +90,23 @@ public:
 	Serpent(double number) : m_valueType(Number), m_number(number), m_children(nullptr) {
 	}
 
-	Serpent(float number) : Serpent(static_cast<double>(number)){}
-	Serpent(int64_t number) : Serpent(static_cast<double>(number)){}
-	Serpent(uint64_t number) : Serpent(static_cast<double>(number)){}
-	Serpent(int32_t number) : Serpent(static_cast<double>(number)){}
-	Serpent(uint32_t number) : Serpent(static_cast<double>(number)){}
-	Serpent(int16_t number) : Serpent(static_cast<double>(number)){}
-	Serpent(uint16_t number) : Serpent(static_cast<double>(number)){}
-	Serpent(int8_t number) : Serpent(static_cast<double>(number)){}
-	Serpent(uint8_t number) : Serpent(static_cast<double>(number)){}
+	Serpent(float number) : Serpent(static_cast<double>(number)) {}
 
+	Serpent(int64_t number) : Serpent(static_cast<double>(number)) {}
+
+	Serpent(uint64_t number) : Serpent(static_cast<double>(number)) {}
+
+	Serpent(int32_t number) : Serpent(static_cast<double>(number)) {}
+
+	Serpent(uint32_t number) : Serpent(static_cast<double>(number)) {}
+
+	Serpent(int16_t number) : Serpent(static_cast<double>(number)) {}
+
+	Serpent(uint16_t number) : Serpent(static_cast<double>(number)) {}
+
+	Serpent(int8_t number) : Serpent(static_cast<double>(number)) {}
+
+	Serpent(uint8_t number) : Serpent(static_cast<double>(number)) {}
 
 
 	bool IsNumber() {
@@ -107,6 +115,7 @@ public:
 
 	// String
 	Serpent(std::string string);
+
 	Serpent(const char*);
 
 	bool IsString() {
@@ -146,12 +155,13 @@ public:
 
 	std::pair<Serpent, Serpent>* begin();
 
-	std::pair<Serpent, Serpent>* end();
-
 	const std::pair<Serpent, Serpent>* begin() const;
+
+	std::pair<Serpent, Serpent>* end();
 
 	const std::pair<Serpent, Serpent>* end() const;
 
+	size_t size() const;
 
 	static Serpent Load(const std::string& serpentString);
 
@@ -209,7 +219,6 @@ Serpent& Serpent::operator[](const T& value) {
 	}
 	return *it->second;
 }
-
 
 
 #endif //SERPENTCPP_SERPENT_HPP

@@ -108,16 +108,40 @@ std::pair<Serpent, Serpent>* Serpent::PairAt(size_t index) {
 
 std::pair<Serpent, Serpent>* Serpent::begin() {
 	if (m_children && m_children->children.size()) {
-		m_children->children.front();
+		return &m_children->children.front();
+	}
+	return nullptr;
+}
+
+const std::pair<Serpent, Serpent>* Serpent::begin() const {
+	if (m_children && m_children->children.size()) {
+		return &m_children->children.front();
 	}
 	return nullptr;
 }
 
 std::pair<Serpent, Serpent>* Serpent::end() {
 	if (m_children && m_children->children.size()) {
-		m_children->children.back();
+		// Ranged loops are not inclusive..
+		return (&m_children->children.back()) + 1;
 	}
 	return nullptr;
+}
+
+const std::pair<Serpent, Serpent>* Serpent::end() const {
+	// Ranged loops are not inclusive..
+	if (m_children && m_children->children.size()) {
+		return (&m_children->children.back()) + 1;
+	}
+	return nullptr;
+}
+
+
+size_t Serpent::size() const {
+	if (m_children) {
+		return m_children->children.size();
+	}
+	return 0;
 }
 
 Serpent* Serpent::At(size_t index) {
@@ -127,19 +151,6 @@ Serpent* Serpent::At(size_t index) {
 	return nullptr;
 }
 
-const std::pair<Serpent, Serpent>* Serpent::end() const {
-	if (m_children && m_children->children.size()) {
-		m_children->children.back();
-	}
-	return nullptr;
-}
-
-const std::pair<Serpent, Serpent>* Serpent::begin() const {
-	if (m_children && m_children->children.size()) {
-		m_children->children.front();
-	}
-	return nullptr;
-}
 
 Serpent Serpent::Load(const std::string& str) {
 	Serpent base;
