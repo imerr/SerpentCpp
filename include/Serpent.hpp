@@ -118,21 +118,26 @@ public:
 
 	Serpent(const char*);
 
-	bool IsString() {
+	bool IsString() const {
 		return m_valueType == String;
 	}
 
 	// Table
-	bool IsTable() {
+	bool IsTable() const {
 		return m_valueType == Table;
 	}
 
 	template<typename T>
 	Serpent& operator[](const T& value);
 
+	template<typename T>
+	const Serpent& operator[](const T& value) const;
+
 	std::pair<Serpent, Serpent>* PairAt(size_t index);
+	const std::pair<Serpent, Serpent>* PairAt(size_t index) const;
 
 	Serpent* At(size_t index);
+	const Serpent* At(size_t index) const;
 
 	void AddChild(const Serpent& key, const Serpent& value);
 
@@ -209,6 +214,18 @@ bool operator==(const Serpent& lhs, const Serpent& rhs);
 
 template<typename T>
 Serpent& Serpent::operator[](const T& value) {
+	if (!IsTable()) {
+		return NullSerpent;
+	}
+	Serpent key(value);
+	auto it = m_children->map.find(key);
+	if (it == m_children->map.end()) {
+		return NullSerpent;
+	}
+	return *it->second;
+}
+template<typename T>
+const Serpent& Serpent::operator[](const T& value) const {
 	if (!IsTable()) {
 		return NullSerpent;
 	}

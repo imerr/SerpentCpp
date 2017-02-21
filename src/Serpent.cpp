@@ -105,6 +105,12 @@ std::pair<Serpent, Serpent>* Serpent::PairAt(size_t index) {
 	}
 	return nullptr;
 }
+const std::pair<Serpent, Serpent>* Serpent::PairAt(size_t index) const {
+	if (m_children && index < m_children->children.size()) {
+		return &m_children->children.at(index);
+	}
+	return nullptr;
+}
 
 std::pair<Serpent, Serpent>* Serpent::begin() {
 	if (m_children && m_children->children.size()) {
@@ -145,6 +151,13 @@ size_t Serpent::size() const {
 }
 
 Serpent* Serpent::At(size_t index) {
+	if (m_children && index < m_children->children.size()) {
+		return &m_children->children.at(index).second;
+	}
+	return nullptr;
+}
+
+const Serpent* Serpent::At(size_t index) const {
 	if (m_children && index < m_children->children.size()) {
 		return &m_children->children.at(index).second;
 	}
